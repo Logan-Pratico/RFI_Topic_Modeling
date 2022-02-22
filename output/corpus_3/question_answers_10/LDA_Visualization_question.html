@@ -1,0 +1,41 @@
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/bmabey/pyLDAvis@3.3.1/pyLDAvis/js/ldavis.v1.0.0.css">
+
+
+<div id="ldavis_el927431404268151389447932737248"></div>
+<script type="text/javascript">
+
+var ldavis_el927431404268151389447932737248_data = {"mdsDat": {"x": [-0.19447441033207177, 0.21195263794820376, -0.176426961233689, 0.14165414011106817, 0.0172945935064889], "y": [0.11437908084138794, -0.13079434257016062, -0.14715748832450515, 0.17026869353217527, -0.0066959434788973924], "topics": [1, 2, 3, 4, 5], "cluster": [1, 1, 1, 1, 1], "Freq": [36.22937094933434, 22.792787666451993, 20.23004660034783, 17.358976454932126, 3.388818328933718]}, "tinfo": {"Term": ["information", "clinical", "data", "data", "clinical", "information", "information", "clinical", "data", "clinical", "data", "information", "information", "data", "clinical", "information", "clinical", "data"], "Freq": [44.0, 56.0, 68.0, 45.63228184646128, 15.769037800975385, 0.18861096643169986, 26.65071388446613, 11.893104915649811, 0.20392023285244668, 26.956427430930407, 7.23757148521781, 0.19708030444309513, 15.554883480427542, 13.772184566121743, 0.1831919268353303, 1.916512713366092, 1.915467799947868, 1.9290106458733605], "Total": [44.0, 56.0, 68.0, 68.77496877652663, 56.7172298743388, 44.50780134913455, 44.50780134913455, 56.7172298743388, 68.77496877652663, 56.7172298743388, 68.77496877652663, 44.50780134913455, 44.50780134913455, 68.77496877652663, 56.7172298743388, 44.50780134913455, 56.7172298743388, 68.77496877652663], "Category": ["Default", "Default", "Default", "Topic1", "Topic1", "Topic1", "Topic2", "Topic2", "Topic2", "Topic3", "Topic3", "Topic3", "Topic4", "Topic4", "Topic4", "Topic5", "Topic5", "Topic5"], "logprob": [3.0, 2.0, 1.0, -0.2999, -1.3625, -5.7886, -0.3743, -1.1811, -5.2471, -0.2436, -1.5585, -5.1619, -0.6404, -0.7621, -5.082, -1.1006, -1.1011, -1.0941], "loglift": [3.0, 2.0, 1.0, 0.6051, -0.2647, -4.4484, 0.9659, -0.0834, -4.3421, 0.8541, -0.6536, -3.8218, 0.6998, 0.1429, -3.9842, 0.2395, -0.0034, -0.1891]}, "token.table": {"Topic": [1, 2, 3, 5, 1, 3, 4, 5, 2, 4, 5], "Freq": [0.2821012245388073, 0.2115759184041055, 0.4760458164092374, 0.035262653067350914, 0.6688479954017822, 0.10178121669157555, 0.2035624333831511, 0.029080347626164443, 0.6066352230747748, 0.3594875395998665, 0.044935942449983314], "Term": ["clinical", "clinical", "clinical", "clinical", "data", "data", "data", "data", "information", "information", "information"]}, "R": 3, "lambda.step": 0.01, "plot.opts": {"xlab": "PC1", "ylab": "PC2"}, "topic.order": [4, 1, 3, 5, 2]};
+
+function LDAvis_load_lib(url, callback){
+  var s = document.createElement('script');
+  s.src = url;
+  s.async = true;
+  s.onreadystatechange = s.onload = callback;
+  s.onerror = function(){console.warn("failed to load library " + url);};
+  document.getElementsByTagName("head")[0].appendChild(s);
+}
+
+if(typeof(LDAvis) !== "undefined"){
+   // already loaded: just create the visualization
+   !function(LDAvis){
+       new LDAvis("#" + "ldavis_el927431404268151389447932737248", ldavis_el927431404268151389447932737248_data);
+   }(LDAvis);
+}else if(typeof define === "function" && define.amd){
+   // require.js is available: use it to load d3/LDAvis
+   require.config({paths: {d3: "https://d3js.org/d3.v5"}});
+   require(["d3"], function(d3){
+      window.d3 = d3;
+      LDAvis_load_lib("https://cdn.jsdelivr.net/gh/bmabey/pyLDAvis@3.3.1/pyLDAvis/js/ldavis.v3.0.0.js", function(){
+        new LDAvis("#" + "ldavis_el927431404268151389447932737248", ldavis_el927431404268151389447932737248_data);
+      });
+    });
+}else{
+    // require.js not available: dynamically load d3 & LDAvis
+    LDAvis_load_lib("https://d3js.org/d3.v5.js", function(){
+         LDAvis_load_lib("https://cdn.jsdelivr.net/gh/bmabey/pyLDAvis@3.3.1/pyLDAvis/js/ldavis.v3.0.0.js", function(){
+                 new LDAvis("#" + "ldavis_el927431404268151389447932737248", ldavis_el927431404268151389447932737248_data);
+            })
+         });
+}
+</script>
