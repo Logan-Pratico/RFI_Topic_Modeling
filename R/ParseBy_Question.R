@@ -4,8 +4,11 @@ library(janitor)
 library(pdftools)
 library(stringr)
 
+## This document parses the data by question category
 
 
+
+# Simple function to remove subquestions
 removeSubQuestions <- function(doc){
    inc <- 1
    while(inc <= length(subSegment)){
@@ -20,31 +23,29 @@ removeSubQuestions <- function(doc){
 
 
 
-
+# read PDF of all responses
 x <- pdf_text(here("data-raw", "RFIConsolidatedComments.pdf")) %>% 
   paste0(collapse=" ")
 
+# Parse each response into its own element in a list
 x <- str_split(x, "Submission No.:") %>% unlist() 
 x <- x[-1]
 
 
 
-
+# create an array for each question
 i <- 1
 one <- two <- three <- rep(NA, length(x))
 vecs <- list(one, two, three)
-# segment <- c("1\\. Website Functionality\\. NLM s.+ programming interface .API\\)\\.",
-#              "2\\. Information Submission\\. NLM .+col Registration and Results System .PRS\\)\\.",
-#              "3\\. Data Standards\\. NLM seeks .+controlled terminologies for inclusion and exclusion criteria\\)\\."
-#              )
 
+# Regex of questions to be used for searches
 segment <- c("1\\. Website Functionality\\. NLM s[^\\)]+\\)\\.",
              "2\\. Information Submission\\. NLM [^\\)]+\\)\\.",
              "3\\. Data Standards\\. NLM seeks .+[^\\)]+\\)\\."
             )
 
 
-
+# Regex of subquestions to be used for searches
 subSegment <- c("1a\\. List specific examples of unsupported, .+ uses\\.",
              "1b\\. Describe resources for p.+ useful\\.",
              "1c\\. Provide specific example.+ improvements\\.",
@@ -57,9 +58,14 @@ subSegment <- c("1a\\. List specific examples of unsupported, .+ uses\\.",
              "3a\\. Provide input on ways to balance.+plan\\.",
              "3b\\. List names of and references.+ ClinicalTrials\\.gov\\.")
 
+#separate count variables to increment when a hit is found for each question
 count1 <- count2 <- count3 <- 1
 
 while(i <= length(x)){
+
+## The following code parses each document and looks for a particular question.
+## When it finds a question, it further parses the document until only the response for that particular question remains.
+
  
  if(grepl(segment[1], x[i])){
     doc <- str_split(x[i], segment[1])

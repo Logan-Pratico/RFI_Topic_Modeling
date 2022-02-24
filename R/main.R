@@ -4,12 +4,21 @@ library(janitor)
 library(pdftools)
 library(stringr)
 
+
+
+## This document reads in the raw PDF and creates both the first corpus of documents, and the subquestion corpora.
+## Subsetting by question was considerably more straightforward of a task, and as such is done in another R file in this directory.
+
+
+
+# read pdf of responses
 x <- pdf_text(here("data-raw", "RFIConsolidatedComments.pdf")) %>% 
   paste0(collapse=" ")
 
+# split data along submission No. (creating first corpus)
 x <- str_split(x, "Submission No.:") %>% unlist() 
 
-
+# Develop arrays of subquestions
 i <- 1
 oneA <- oneB <- oneC <- oneD <- twoA <- twoB <- twoC <- twoD <- twoE <- threeA <- threeB <- rep(NA, length(x))
 vecs <- list(oneA, oneB, oneC, oneD, twoA, twoB, twoC, twoD, twoE, threeA, threeB)
@@ -25,12 +34,15 @@ segment <- c("1a\\. List specific examples of unsupported, .+ uses\\.",
              "3a\\. Provide input on ways to balance.+plan\\.",
              "3b\\. List names of and references.+ ClinicalTrials\\.gov\\.")
 
+
+#Iterate over arrays of subquestions in order to parse out documents by subquestion
 while(i <= length(x)){
   
   segNum <- 1
   while(segNum <= length(segment)){
+
+	# If a subquestion is found, store the value in the list
     if(grepl(segment[segNum], x[i])){
-      #print("TESTING")
       vecs[[segNum]][i] <- gsub(paste0(".+",segment[segNum], "\n\n(.+?)[1-9][a-z].+"), "\\1", x[i])
       vecs[[segNum]][i] <- gsub(paste0(".+",segment[segNum], "\n\n(.+?)"), "\\1", vecs[[segNum]][i])
       
@@ -47,12 +59,9 @@ while(i <= length(x)){
   
   i <- i + 1
 }
-
+# Create each of the 11 corpora along each subquestion.
 i <- 1
 while(i <= length(vecs)){
- # df <- data.frame(vecs[[i]])
- # colnames(df) <- "answer"
- # df <- df %>% filter(!is.na(answer))
   x <- 1
   p <- 1
   while(x <= length(vecs[[i]])){
